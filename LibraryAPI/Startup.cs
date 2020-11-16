@@ -50,6 +50,11 @@ namespace LibraryAPI
             services.AddSingleton<MapperConfiguration>(mapperConfiguration);
             services.AddSingleton<IMapper>(mapper);
 
+            
+            services.AddScoped<ILookupBooks, EfSqlBooks>();
+            services.AddScoped<IBookCommands, EfSqlBooks>();
+
+
             services.AddSwaggerGen(c =>
            {
                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
