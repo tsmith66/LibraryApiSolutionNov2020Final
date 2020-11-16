@@ -37,7 +37,6 @@ namespace LibraryAPI
 
             services.AddDbContext<LibraryDataContext>(options =>
             {
-                // TODO: Get rid of this hard-coded connection string before an infrastructure person burns down my house.
                 options.UseSqlServer(Configuration.GetConnectionString("library"));
             });
 

@@ -14,16 +14,18 @@ namespace LibraryAPI.Controllers
 {
     public class BooksController: ControllerBase
     {
+        private readonly ILookupBooks _bookLookup;
 
         private readonly LibraryDataContext _context;
         private readonly MapperConfiguration _config;
         private readonly IMapper _mapper;
 
-        public BooksController(LibraryDataContext context, MapperConfiguration config, IMapper mapper)
+        public BooksController(LibraryDataContext context, MapperConfiguration config, IMapper mapper, ILookupBooks bookLookup)
         {
             _context = context;
             _config = config;
             _mapper = mapper;
+            _bookLookup = bookLookup;
         }
 
         [HttpPut("books/{id:int}/genre")]
@@ -110,14 +112,7 @@ namespace LibraryAPI.Controllers
         [Produces("application/json")]
         public async Task<ActionResult<GetBooksResponse>> GetAllBooks()
         {
-            var books = await _context.GetBooksThatAreInInventory()
-                .ProjectTo<GetBooksResponseItem>(_config)
-                .ToListAsync();
-
-            var response = new GetBooksResponse
-            {
-                Data = books
-            };
+            GetBooksResponse response = await _bookLookup.GetAllBooks();
             return Ok(response);
         }
        
