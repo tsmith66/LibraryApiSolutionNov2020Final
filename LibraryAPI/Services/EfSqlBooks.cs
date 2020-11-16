@@ -36,6 +36,7 @@ namespace LibraryAPI.Services
         {
             var books = await _context.GetBooksThatAreInInventory()
                .ProjectTo<GetBooksResponseItem>(_config)
+               .AsNoTracking()
                //.Select(b => _mapper.Map<GetBooksResponseItem>(b))
                .ToListAsync();
 
