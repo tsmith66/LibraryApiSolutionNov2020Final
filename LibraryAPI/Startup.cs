@@ -53,7 +53,12 @@ namespace LibraryAPI
             
             services.AddScoped<ILookupBooks, EfSqlBooks>();
             services.AddScoped<IBookCommands, EfSqlBooks>();
+            services.AddScoped<ILookupOnCallDevelopers, RedisOnCallLookup>();
 
+            services.AddDistributedRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetConnectionString("redis");
+            });
 
             services.AddSwaggerGen(c =>
            {
