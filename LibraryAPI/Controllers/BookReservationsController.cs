@@ -14,10 +14,50 @@ namespace LibraryAPI.Controllers
     {
         private readonly LibraryDataContext _context;
         private readonly IProcessBookReservations _orderProcessor;
-        public BookReservationsController(LibraryDataContext context)
+        public BookReservationsController(LibraryDataContext context, IProcessBookReservations orderProcessor)
         {
             _context = context;
+            _orderProcessor = orderProcessor;
         }
+
+        [HttpPost("/bookreservations/approved")]
+        [ValidateModel]
+        public async Task<ActionResult> ApproveReservation([FromBody] GetReservationResponse request)
+        {
+            var savedReservation = await _context.Reservations
+                .SingleOrDefaultAsync(b => b.Id == request.Id);
+
+            if(savedReservation == null)
+            {
+                return BadRequest("Could not find that reservation");
+            } else
+            {
+                savedReservation.Status = BookReservationStatus.Approved;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+
+        }
+        [HttpPost("/bookreservations/denied")]
+        [ValidateModel]
+        public async Task<ActionResult> DenyReservation([FromBody] GetReservationResponse request)
+        {
+            var savedReservation = await _context.Reservations
+                .SingleOrDefaultAsync(b => b.Id == request.Id);
+
+            if (savedReservation == null)
+            {
+                return BadRequest("Could not find that reservation");
+            }
+            else
+            {
+                savedReservation.Status = BookReservationStatus.Denied;
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+
+        }
+
 
         [HttpPost("bookreservations")]
         [ValidateModel]

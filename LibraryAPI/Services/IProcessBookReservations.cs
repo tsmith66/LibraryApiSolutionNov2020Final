@@ -5,6 +5,6 @@ namespace LibraryAPI
 {
     public interface IProcessBookReservations
     {
-        Task LogOrder(PostReservationRequest request);
+        Task LogOrder(GetReservationResponse request);
     }
 }

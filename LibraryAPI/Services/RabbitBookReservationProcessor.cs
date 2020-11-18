@@ -1,4 +1,5 @@
 ﻿using LibraryAPI.Models.BookReservations;
+using RabbitMqUtils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,18 @@ namespace LibraryAPI.Services
 {
     public class RabbitBookReservationProcessor : IProcessBookReservations
     {
+        IRabbitManager _manager;
+
+        public RabbitBookReservationProcessor(IRabbitManager manager)
+        {
+            _manager = manager;
+        }
+
         public Task LogOrder(GetReservationResponse request)
         {
-            throw new NotImplementedException();
+            _manager.Publish(request, "", "direct", "reservations");
+            return Task.CompletedTask;
+                
         }
     }
 }

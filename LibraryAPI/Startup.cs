@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RabbitMqUtils;
 
 namespace LibraryAPI
 {
@@ -61,6 +62,9 @@ namespace LibraryAPI
             services.AddScoped<IBookCommands, EfSqlBooks>();
             services.AddScoped<ILookupOnCallDevelopers, RedisOnCallLookup>();
             services.AddHostedService<CachePrimer>();
+
+            services.AddRabbit(Configuration);
+            services.AddScoped<IProcessBookReservations, RabbitBookReservationProcessor>();
             services.AddDistributedRedisCache(options =>
             {
                 options.Configuration = Configuration.GetConnectionString("redis");
