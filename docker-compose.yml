@@ -1,15 +1,10 @@
 version: "3.7"
 services:
-    api:
-        image: jeffrygonzalez/api
-        depends_on: 
-            - db
-        ports:
-            - 80:80
-        environment:
-            - ConnectionStrings__library=server=db;database=books_prod;user=sa;password=TokyoJoe138!
-    db:
-        image: jeffrygonzalez/librarysql-oct2020
+    sql:
+        image: jeffrygonzalez/sql-library-nov-2020:latest
         ports:
             - 1433:1433
-        
+    redis:
+        image: redis:latest
+        ports:
+            - 6379:6379

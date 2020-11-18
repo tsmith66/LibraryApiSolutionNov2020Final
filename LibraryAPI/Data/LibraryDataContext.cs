@@ -15,10 +15,13 @@ namespace LibraryAPI.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
 
+        public DbSet<BookReservation> Reservations { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Book>().Property(b => b.Title).HasMaxLength(200);
             modelBuilder.Entity<Book>().Property(b => b.Author).HasMaxLength(200);
+            
             // etc. etc. 
         }
 
